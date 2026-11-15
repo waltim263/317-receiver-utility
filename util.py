@@ -1,5 +1,7 @@
 
+import os
 import subprocess
+import sys
 import time
 import threading
 from tqdm import tqdm
@@ -95,6 +97,11 @@ def upload_one(receiver, filepath):
 
 # === Main CLI ===
 def main():
+    # The receiver password is read from the SSHPASS environment variable
+    # (sshpass -e), so it never lives in this repository.
+    if not os.environ.get("SSHPASS"):
+        sys.exit("Set the receiver password first: export SSHPASS='...'")
+
     fileName = "simple_test.py"
     receivers = load_receivers("ipp.txt")
 
